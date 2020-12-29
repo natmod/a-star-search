@@ -12,7 +12,6 @@ using std::string;
 using std::vector;
 using std::abs;
 
-// TODO: Add kStart and kFinish enumerators to the State enum.
 enum class State {kEmpty, kObstacle, kClosed, kPath, kStart, kFinish};
 
 // directional deltas
@@ -89,7 +88,6 @@ bool CheckValidCell(int x, int y, vector<vector<State>> &grid) {
  * Add a node to the open list and mark it as open. 
  */
 void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector<vector<State>> &grid) {
-  // Add node to open vector, and mark grid cell as closed.
   openlist.push_back(vector<int>{x, y, g, h});
   grid[x][y] = State::kClosed;
 }
@@ -99,7 +97,6 @@ void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector
  * Expand current nodes's neighbors and add them to the open list.
  */
 void ExpandNeighbors(const vector<int> &current, int goal[2], vector<vector<int>> &openlist, vector<vector<State>> &grid) {
-  // Get current node's data.
   int x = current[0];
   int y = current[1];
   int g = current[2];
@@ -127,7 +124,6 @@ vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2
   // Create the vector of open nodes.
   vector<vector<int>> open {};
   
-  // Initialize the starting node.
   int x = init[0];
   int y = init[1];
   
@@ -146,8 +142,6 @@ vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2
 
     // Check if we're done.
     if (x == goal[0] && y == goal[1]) {
-      // TODO: Set the init grid cell to kStart, and 
-      // set the goal grid cell to kFinish before returning the grid. 
       grid[init[0]][init[1]] = State::kStart;
   	  grid[goal[0]][goal[1]] = State::kFinish;
       return grid;
@@ -156,8 +150,7 @@ vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2
     // If we're not done, expand search to current node's neighbors.
     ExpandNeighbors(current, goal, open, grid);
   }
-  
-  // We've run out of new nodes to explore and haven't found a path.
+
   cout << "No path found!" << "\n";
   return std::vector<vector<State>>{};
 }
@@ -167,8 +160,6 @@ string CellString(State cell) {
   switch(cell) {
     case State::kObstacle: return "⛰️   ";
     case State::kPath: return "🚗   ";
-    // TODO: Add cases to return "🚦   " for kStart
-    // and "🏁   " for kFinish.
     case State::kStart: return "🚦 ";
     case State::kFinish: return "🏁 ";
     default: return "0   "; 
